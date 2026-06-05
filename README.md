@@ -15,11 +15,10 @@ A R1 platform fee is charged per order (to the buyer, not the vendor).
 
 | Layer      | Technology                          |
 |------------|-------------------------------------|
-| Frontend   | HTML5, CSS3, Bootstrap 5.3, Font Awesome 6 |
-| Scripting  | JavaScript (vanilla, AJAX fetch)    |
-| Backend    | PHP 8.x                             |
-| Database   | MySQL 8.x (PDO)                     |
-| Hosting    | AWS EC2 (Apache) + RDS MySQL        |
+| Frontend   | HTML, CSS, Bootstrap                |
+| Scripting  | JavaScript                          |
+| Backend    | PHP                                 |
+| Database   | MySQL                               |
 | Fonts      | Google Fonts (Poppins + Nunito)     |
 
 ---
@@ -36,11 +35,10 @@ alsation-eats/
 ├── orders.php              # Buyer order history
 ├── login.php               # Authentication
 ├── register.php            # New account
-├── logout.php
+├── logout.php              # Logout Page
 ├── profile.php             # Account management
 ├── favourites.php          # Saved vendors
 ├── help.php                # FAQ
-├── install.php             # ONE-TIME DB setup (delete after!)
 │
 ├── includes/
 │   ├── db.php              # PDO singleton
@@ -77,41 +75,6 @@ alsation-eats/
     ├── proof/              # EFT payment screenshots
     ├── menu/               # Menu item photos
     └── vendor/             # Shop banner images
-```
-
----
-
-## Default Accounts (seeded by install.php)
-
-| Role   | Name           | Email                          | Password   |
-|--------|----------------|--------------------------------|------------|
-| Admin  | Kagiso Mphela  | kagiso@alsationeats.co.za      | Admin@123  |
-| Vendor | Ma Bee         | mabee@wozawoza.co.za           | Admin@123  |
-| Vendor | Judy           | judy@vascos.co.za              | Admin@123  |
-| Vendor | Mary           | mary@amagwinya.co.za           | Admin@123  |
-
----
-
-## Seeded Vendors & Menu
-
-| Vendor      | Owner  | Sample Items                          |
-|-------------|--------|---------------------------------------|
-| Woza Woza   | Ma Bee | Full Kota, Half Kota, Chicken Kota    |
-| Vascos      | Judy   | Braai Plate, Wors & Chips, Slap Chips |
-| Amagwinya   | Mary   | Vetkoek x4, Amagwinya x6, Curry Vetkoek |
-
----
-
-## Deployment
-
-See `AWS_DEPLOYMENT.md` for full step-by-step AWS EC2 + RDS setup.
-
-**Quick start (local test):**
-```bash
-# Requires XAMPP/Laragon
-# Place files in htdocs/alsation-eats/
-# Visit http://localhost/alsation-eats/install.php
-```
 
 ---
 
@@ -139,4 +102,4 @@ Customer browses vendors
 - **R1 platform fee**: Added to each order total (buyer pays)
 - **Favourites**: Heart any vendor, view on Favourites page
 - **CSRF protection**: All POST forms protected
-- **Mobile responsive**: Bootstrap 5 sidebar, hamburger menu
+- **Mobile responsive**: Bootstrap sidebar, hamburger menu
