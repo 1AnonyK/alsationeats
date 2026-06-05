@@ -10,6 +10,8 @@ define('DB_USER', 'root');
 define('DB_PASS', 'zCOmMIVooihyltiIdskLeAdXGKzrykvy'); 
 define('DB_PORT', '3306');
 
+define('DB_CHARSET', 'utf8mb4');
+
 define('PLATFORM_FEE', 1.00);
 define('SITE_NAME',  'Alsation Eats');
 
