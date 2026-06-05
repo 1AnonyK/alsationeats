@@ -1,11 +1,10 @@
 <?php
 
-define('DB_HOST', getenv('MYSQLHOST'));
-define('DB_NAME', getenv('MYSQLDATABASE'));
-define('DB_USER', getenv('MYSQLUSER'));
-define('DB_PASS', getenv('MYSQLPASSWORD'));
-define('DB_PORT', getenv('MYSQLPORT'));
-define('DB_CHARSET', 'utf8mb4');
+define('DB_HOST', 'mysql');
+define('DB_NAME', 'railway');
+define('DB_USER', 'root'); 
+define('DB_PASS', 'zCOmMIVooihyltiIdskLeAdXGKzrykvy'); 
+define('DB_PORT', '3306');
 
 define('PLATFORM_FEE', 1.00);
 define('SITE_NAME',  'Alsation Eats');
@@ -17,7 +16,7 @@ if (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROT
 }
 
 $host = $_SERVER['HTTP_HOST'];
-$subfolder = '/'; // Production environments serve directly from the root
+$subfolder = '/';
 
 define('SITE_URL', $protocol . $host . $subfolder);
 
