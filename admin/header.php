@@ -19,8 +19,7 @@ $adminPage = basename($_SERVER['PHP_SELF'], '.php');
 </head>
 <body>
 <div class="admin-wrapper">
-  <!-- Admin Sidebar -->
-  <aside class="admin-sidebar">
+  <aside class="admin-sidebar" id="adminSidebar">
     <div class="mb-4">
       <span class="logo-text" style="font-family:'Poppins',sans-serif;font-weight:800;font-size:1.1rem">
         Alsation Eats
@@ -60,5 +59,10 @@ $adminPage = basename($_SERVER['PHP_SELF'], '.php');
     </div>
   </aside>
 
-  <!-- Admin Content -->
   <div class="admin-content">
+    <header class="admin-top-bar d-md-none">
+      <button class="admin-sidebar-toggle" id="adminSidebarToggle">
+        <i class="fa-solid fa-bars"></i>
+      </button>
+      <span class="fw-bold" style="font-family:'Poppins',sans-serif; color:var(--text-dark);">Admin Console</span>
+    </header>
