@@ -18,7 +18,6 @@ $currentPage = basename($_SERVER['PHP_SELF'], '.php');
 </head>
 <body>
 <div class="app-wrapper">
-    <!-- SIDEBAR -->
     <aside class="sidebar" id="sidebar">
         <div class="sidebar-logo">
             <a href="<?= SITE_URL ?>/index.php" class="text-decoration-none">
@@ -63,16 +62,14 @@ $currentPage = basename($_SERVER['PHP_SELF'], '.php');
                 <i class="fa-solid fa-right-from-bracket"></i> Log Out
             </a>
             <?php else: ?>
-            <a href="<?= SITE_URL ?>/login.php" class="nav-pill">
+            <a href="<?= SITE_URL ?>/login.php" class="nav-pill login-pill">
                 <i class="fa-solid fa-right-to-bracket"></i> Log In
             </a>
             <?php endif; ?>
         </div>
     </aside>
 
-    <!-- MAIN AREA -->
     <div class="main-area">
-        <!-- TOP BAR -->
         <header class="top-bar">
             <button class="sidebar-toggle d-md-none" id="sidebarToggle">
                 <i class="fa-solid fa-bars"></i>
@@ -103,5 +100,4 @@ $currentPage = basename($_SERVER['PHP_SELF'], '.php');
             </div>
         </header>
 
-        <!-- PAGE CONTENT -->
         <main class="page-content">
