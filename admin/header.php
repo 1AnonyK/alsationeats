@@ -60,9 +60,10 @@ $adminPage = basename($_SERVER['PHP_SELF'], '.php');
   </aside>
 
   <div class="admin-content">
+    
     <header class="admin-top-bar d-md-none">
       <button class="admin-sidebar-toggle" id="adminSidebarToggle">
         <i class="fa-solid fa-bars"></i>
       </button>
-      <span class="fw-bold" style="font-family:'Poppins',sans-serif; color:var(--text-dark);">Admin Console</span>
+      <span style="font-family:'Poppins',sans-serif; font-weight:800; font-size:1.2rem; color:var(--text-dark);">Admin Console</span>
     </header>
