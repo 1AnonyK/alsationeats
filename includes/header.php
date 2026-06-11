@@ -24,6 +24,7 @@ $currentPage = basename($_SERVER['PHP_SELF'], '.php');
                 <span class="logo-text">Alsation Eats</span>
             </a>
         </div>
+        
         <nav class="sidebar-nav">
             <a href="<?= SITE_URL ?>/index.php" class="nav-pill <?= $currentPage === 'index' ? 'active' : '' ?>">
                 <i class="fa-solid fa-house"></i> Home
@@ -51,22 +52,23 @@ $currentPage = basename($_SERVER['PHP_SELF'], '.php');
             <a href="<?= SITE_URL ?>/help.php" class="nav-pill <?= $currentPage === 'help' ? 'active' : '' ?>">
                 <i class="fa-solid fa-circle-question"></i> Help
             </a>
-        </nav>
-        <div class="sidebar-footer">
-            <?php if (isLoggedIn()): ?>
-            <div class="user-chip">
-                <i class="fa-solid fa-circle-user"></i>
-                <span><?= h(currentUserName()) ?></span>
+
+            <div style="margin-top: 16px; border-top: 1px solid rgba(255,255,255,0.4); padding-top: 16px; display: flex; flex-direction: column; gap: 8px;">
+                <?php if (isLoggedIn()): ?>
+                <div class="user-chip" style="padding-left: 12px; margin-bottom: 4px;">
+                    <i class="fa-solid fa-circle-user"></i>
+                    <span><?= h(currentUserName()) ?></span>
+                </div>
+                <a href="<?= SITE_URL ?>/logout.php" class="nav-pill logout-pill">
+                    <i class="fa-solid fa-right-from-bracket"></i> Log Out
+                </a>
+                <?php else: ?>
+                <a href="<?= SITE_URL ?>/login.php" class="nav-pill login-pill">
+                    <i class="fa-solid fa-right-to-bracket"></i> Log In
+                </a>
+                <?php endif; ?>
             </div>
-            <a href="<?= SITE_URL ?>/logout.php" class="nav-pill logout-pill">
-                <i class="fa-solid fa-right-from-bracket"></i> Log Out
-            </a>
-            <?php else: ?>
-            <a href="<?= SITE_URL ?>/login.php" class="nav-pill login-pill">
-                <i class="fa-solid fa-right-to-bracket"></i> Log In
-            </a>
-            <?php endif; ?>
-        </div>
+        </nav>
     </aside>
 
     <div class="main-area">
