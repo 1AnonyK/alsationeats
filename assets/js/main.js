@@ -1,8 +1,8 @@
-/* Alsation Eats — Main JS */
+/* Alsation Eats JS */
 
 document.addEventListener('DOMContentLoaded', () => {
 
-  // ── Sidebar mobile toggle ──────────────────────────────────
+  // ── Sidebar mobile toggle (Main Website) ───────────────────
   const sidebar  = document.getElementById('sidebar');
   const overlay  = document.getElementById('sidebarOverlay');
   const toggle   = document.getElementById('sidebarToggle');
@@ -20,6 +20,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
   toggle?.addEventListener('click', openSidebar);
   overlay?.addEventListener('click', closeSidebar);
+
+  // ── Sidebar mobile toggle (Admin Panel Namespace) ──────────
+  const adminSidebar = document.getElementById('adminSidebar');
+  const adminOverlay = document.getElementById('adminSidebarOverlay');
+  const adminToggle  = document.getElementById('adminSidebarToggle');
+
+  function openAdminSidebar() {
+    adminSidebar?.classList.add('open');
+    adminOverlay?.classList.add('show');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeAdminSidebar() {
+    adminSidebar?.classList.remove('open');
+    adminOverlay?.classList.remove('show');
+    document.body.style.overflow = '';
+  }
+
+  adminToggle?.addEventListener('click', openAdminSidebar);
+  adminOverlay?.addEventListener('click', closeAdminSidebar);
 
   // ── Add to cart (AJAX) ─────────────────────────────────────
   document.querySelectorAll('.btn-add-cart').forEach(btn => {
