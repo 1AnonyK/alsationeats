@@ -5,13 +5,32 @@ require_once __DIR__ . '/header.php';
 $db = db();
 $success = '';
 
-// Toggle admin / delete
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     verifyCsrf();
     $action = $_POST['action'] ?? '';
     $uid    = (int)($_POST['user_id'] ?? 0);
 
-    if ($action === 'make_admin' && $uid && $uid !== currentUserId()) {
+    if ($action === 'edit' && $uid) {
+        $name  = trim($_POST['name'] ?? '');
+        $email = trim($_POST['email'] ?? '');
+        $phone = trim($_POST['phone'] ?? '');
+        $role  = $_POST['role'] ?? 'customer';
+        $pass  = $_POST['password'] ?? '';
+
+        if ($uid === currentUserId() && $role !== 'admin') {
+            $role = 'admin'; 
+        }
+
+        if ($pass) {
+            $hash = password_hash($pass, PASSWORD_BCRYPT);
+            $db->prepare("UPDATE users SET name=?, email=?, phone=?, role=?, password=? WHERE id=?")
+               ->execute([$name, $email, $phone, $role, $hash, $uid]);
+        } else {
+            $db->prepare("UPDATE users SET name=?, email=?, phone=?, role=? WHERE id=?")
+               ->execute([$name, $email, $phone, $role, $uid]);
+        }
+        $success = 'User updated successfully.';
+    } elseif ($action === 'make_admin' && $uid && $uid !== currentUserId()) {
         $db->prepare("UPDATE users SET role='admin' WHERE id=?")->execute([$uid]);
         $success = 'User promoted to admin.';
     } elseif ($action === 'remove_admin' && $uid && $uid !== currentUserId()) {
@@ -21,6 +40,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $db->prepare("DELETE FROM users WHERE id=?")->execute([$uid]);
         $success = 'User deleted.';
     }
+}
+
+$editUser = null;
+if (isset($_GET['edit'])) {
+    $eStmt = $db->prepare("SELECT * FROM users WHERE id = ?");
+    $eStmt->execute([(int)$_GET['edit']]);
+    $editUser = $eStmt->fetch();
 }
 
 $search  = trim($_GET['q'] ?? '');
@@ -39,6 +65,45 @@ $users = $stmt->fetchAll();
 <p style="color:#6B8499;margin-bottom:24px">All registered accounts</p>
 
 <?php if ($success): ?><div class="ae-alert ae-alert-success"><?= h($success) ?></div><?php endif; ?>
+
+<?php if ($editUser): ?>
+<div class="stat-card mb-4" style="border-top-color:var(--teal)">
+  <h5 style="font-family:'Poppins',sans-serif;font-weight:700;margin-bottom:16px">Edit User: <?= h($editUser['name']) ?></h5>
+  <form method="POST" class="ae-form row g-3">
+    <input type="hidden" name="csrf" value="<?= csrfToken() ?>">
+    <input type="hidden" name="action" value="edit">
+    <input type="hidden" name="user_id" value="<?= $editUser['id'] ?>">
+    
+    <div class="col-md-6">
+      <label class="form-label">Name</label>
+      <input type="text" name="name" class="form-control" value="<?= h($editUser['name']) ?>" required>
+    </div>
+    <div class="col-md-6">
+      <label class="form-label">Email</label>
+      <input type="email" name="email" class="form-control" value="<?= h($editUser['email']) ?>" required>
+    </div>
+    <div class="col-md-4">
+      <label class="form-label">Phone</label>
+      <input type="text" name="phone" class="form-control" value="<?= h($editUser['phone']) ?>">
+    </div>
+    <div class="col-md-4">
+      <label class="form-label">Role</label>
+      <select name="role" class="form-select">
+        <option value="customer" <?= $editUser['role']==='customer'?'selected':'' ?>>Customer</option>
+        <option value="admin" <?= $editUser['role']==='admin'?'selected':'' ?>>Admin</option>
+      </select>
+    </div>
+    <div class="col-md-4">
+      <label class="form-label">New Password</label>
+      <input type="password" name="password" class="form-control" placeholder="Leave blank to keep current">
+    </div>
+    <div class="col-12 mt-3">
+      <button type="submit" class="btn-teal">Save Changes</button>
+      <a href="/admin/users.php" class="btn-outline-teal ms-2">Cancel</a>
+    </div>
+  </form>
+</div>
+<?php endif; ?>
 
 <form class="d-flex gap-2 mb-4" method="GET" style="max-width:400px">
   <input type="text" name="q" class="form-control form-control-sm" placeholder="Search name or email..." value="<?= h($search) ?>">
@@ -71,7 +136,8 @@ $users = $stmt->fetchAll();
         <td style="font-weight:700"><?= $u['order_count'] ?></td>
         <td style="font-size:.8rem;color:#6B8499"><?= date('d M Y',strtotime($u['created_at'])) ?></td>
         <td>
-          <div class="d-flex gap-1">
+          <div class="d-flex gap-1 align-items-center">
+            <a href="?edit=<?= $u['id'] ?>" class="btn-outline-teal" style="padding:3px 10px;font-size:.75rem;text-decoration:none;">Edit</a>
             <?php if ($u['id'] !== currentUserId()): ?>
             <form method="POST" style="margin:0">
               <input type="hidden" name="csrf"    value="<?= csrfToken() ?>">
@@ -85,12 +151,12 @@ $users = $stmt->fetchAll();
               <input type="hidden" name="csrf"    value="<?= csrfToken() ?>">
               <input type="hidden" name="user_id" value="<?= $u['id'] ?>">
               <button name="action" value="delete" type="submit"
-                      style="background:none;border:none;color:var(--danger);cursor:pointer">
+                      style="background:none;border:none;color:var(--danger);cursor:pointer;padding:3px 10px">
                 <i class="fa-solid fa-trash"></i>
               </button>
             </form>
             <?php else: ?>
-            <span style="font-size:.78rem;color:#6B8499">You</span>
+            <span style="font-size:.78rem;color:#6B8499;margin-left:8px;">You</span>
             <?php endif; ?>
           </div>
         </td>
