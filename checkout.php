@@ -7,7 +7,9 @@ $orderId = (int)($_GET['order_id'] ?? 0);
 $userId  = currentUserId();
 
 $stmt = db()->prepare("
-    SELECT o.*, v.name AS vendor_name, u.name AS buyer_name
+    SELECT o.*, v.name AS vendor_name, 
+           v.bank_name, v.bank_holder, v.bank_account, v.bank_branch, v.bank_type,
+           u.name AS buyer_name
     FROM orders o
     JOIN vendors v ON v.id = o.vendor_id
     JOIN users   u ON u.id = o.buyer_id
@@ -17,12 +19,10 @@ $stmt->execute([$orderId, $userId]);
 $order = $stmt->fetch();
 if (!$order) { header('Location: /orders.php'); exit; }
 
-// Order items
 $iStmt = db()->prepare("SELECT * FROM order_items WHERE order_id = ?");
 $iStmt->execute([$orderId]);
 $orderItems = $iStmt->fetchAll();
 
-// Payment record
 $pStmt = db()->prepare("SELECT * FROM payments WHERE order_id = ?");
 $pStmt->execute([$orderId]);
 $payment = $pStmt->fetch();
@@ -47,6 +47,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !$payment) {
     }
 }
 
+$bName   = !empty($order['bank_name']) ? $order['bank_name'] : BANK_NAME;
+$bHolder = !empty($order['bank_holder']) ? $order['bank_holder'] : BANK_HOLDER;
+$bAcc    = !empty($order['bank_account']) ? $order['bank_account'] : BANK_ACCOUNT;
+$bBranch = !empty($order['bank_branch']) ? $order['bank_branch'] : BANK_BRANCH;
+$bType   = !empty($order['bank_type']) ? $order['bank_type'] : BANK_TYPE;
+
 require_once __DIR__ . '/includes/header.php';
 ?>
 
@@ -57,16 +63,15 @@ require_once __DIR__ . '/includes/header.php';
 <?php if ($success): ?><div class="ae-alert ae-alert-success"><?= h($success) ?></div><?php endif; ?>
 
 <div class="row g-4">
-  <!-- EFT details -->
   <div class="col-lg-7">
     <?php if ($order['status'] === 'pending_payment'): ?>
     <div class="bank-box">
       <h5><i class="fa-solid fa-building-columns"></i> EFT Bank Details</h5>
-      <div class="bank-row"><span>Bank</span><strong><?= BANK_NAME ?></strong></div>
-      <div class="bank-row"><span>Account Holder</span><strong><?= BANK_HOLDER ?></strong></div>
-      <div class="bank-row"><span>Account Number</span><strong><?= BANK_ACCOUNT ?></strong></div>
-      <div class="bank-row"><span>Branch Code</span><strong><?= BANK_BRANCH ?></strong></div>
-      <div class="bank-row"><span>Account Type</span><strong><?= BANK_TYPE ?></strong></div>
+      <div class="bank-row"><span>Bank</span><strong><?= h($bName) ?></strong></div>
+      <div class="bank-row"><span>Account Holder</span><strong><?= h($bHolder) ?></strong></div>
+      <div class="bank-row"><span>Account Number</span><strong><?= h($bAcc) ?></strong></div>
+      <div class="bank-row"><span>Branch Code</span><strong><?= h($bBranch) ?></strong></div>
+      <div class="bank-row"><span>Account Type</span><strong><?= h($bType) ?></strong></div>
       <div class="bank-row">
         <span>Reference</span>
         <strong>AE-<?= str_pad($orderId, 5, '0', STR_PAD_LEFT) ?>-<?= $userId ?></strong>
@@ -126,7 +131,6 @@ require_once __DIR__ . '/includes/header.php';
     <?php endif; ?>
   </div>
 
-  <!-- Order summary -->
   <div class="col-lg-5">
     <div class="ae-card">
       <div class="ae-card-title">Order Summary</div>
