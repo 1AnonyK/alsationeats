@@ -1,4 +1,4 @@
-/* Alsation Eats JS */
+/* Alsation Eats — Main JS */
 
 document.addEventListener('DOMContentLoaded', () => {
 
@@ -8,37 +8,37 @@ document.addEventListener('DOMContentLoaded', () => {
   const toggle   = document.getElementById('sidebarToggle');
 
   function openSidebar() {
-    sidebar?.classList.add('open');
-    overlay?.classList.add('show');
+    if(sidebar) sidebar.classList.add('open');
+    if(overlay) overlay.classList.add('show');
     document.body.style.overflow = 'hidden';
   }
   function closeSidebar() {
-    sidebar?.classList.remove('open');
-    overlay?.classList.remove('show');
+    if(sidebar) sidebar.classList.remove('open');
+    if(overlay) overlay.classList.remove('show');
     document.body.style.overflow = '';
   }
 
-  toggle?.addEventListener('click', openSidebar);
-  overlay?.addEventListener('click', closeSidebar);
+  if(toggle) toggle.addEventListener('click', openSidebar);
+  if(overlay) overlay.addEventListener('click', closeSidebar);
 
-  // ── Sidebar mobile toggle (Admin Panel Namespace) ──────────
+  // ── Sidebar mobile toggle (Admin Panel) ────────────────────
   const adminSidebar = document.getElementById('adminSidebar');
   const adminOverlay = document.getElementById('adminSidebarOverlay');
   const adminToggle  = document.getElementById('adminSidebarToggle');
 
   function openAdminSidebar() {
-    adminSidebar?.classList.add('open');
-    adminOverlay?.classList.add('show');
+    if(adminSidebar) adminSidebar.classList.add('open');
+    if(adminOverlay) adminOverlay.classList.add('show');
     document.body.style.overflow = 'hidden';
   }
   function closeAdminSidebar() {
-    adminSidebar?.classList.remove('open');
-    adminOverlay?.classList.remove('show');
+    if(adminSidebar) adminSidebar.classList.remove('open');
+    if(adminOverlay) adminOverlay.classList.remove('show');
     document.body.style.overflow = '';
   }
 
-  adminToggle?.addEventListener('click', openAdminSidebar);
-  adminOverlay?.addEventListener('click', closeAdminSidebar);
+  if(adminToggle) adminToggle.addEventListener('click', openAdminSidebar);
+  if(adminOverlay) adminOverlay.addEventListener('click', closeAdminSidebar);
 
   // ── Add to cart (AJAX) ─────────────────────────────────────
   document.querySelectorAll('.btn-add-cart').forEach(btn => {
