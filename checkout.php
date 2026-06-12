@@ -66,7 +66,8 @@ require_once __DIR__ . '/includes/header.php';
   <div class="col-lg-7">
     <?php if ($order['status'] === 'pending_payment'): ?>
     <div class="bank-box">
-      <h5><i class="fa-solid fa-building-columns"></i> EFT Bank Details</h5>
+      <h3><i class="fa-solid fa-building-columns"></i> EFT Bank Details</h3>
+      <h5> Please Note <strong>ALL</strong> Payments must be immediate, If not vendor reserves right to withhold order</h5>
       <div class="bank-row"><span>Bank</span><strong><?= h($bName) ?></strong></div>
       <div class="bank-row"><span>Account Holder</span><strong><?= h($bHolder) ?></strong></div>
       <div class="bank-row"><span>Account Number</span><strong><?= h($bAcc) ?></strong></div>
